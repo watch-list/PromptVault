@@ -25,7 +25,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Background */
         .bg-gradient {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 10% 20%, rgba(99, 39, 133, 0.4) 0%, rgba(0,0,0,0) 50%),
@@ -43,14 +42,16 @@
             margin: 0 0 20px 0;
         }
 
-        /* --- NAVIGATION BUTTONS --- */
+        /* --- NAVIGATION STYLES --- */
         .nav-container {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
         }
+
+        /* Class to hide nav when sharing */
+        .nav-hidden { display: none !important; }
 
         .nav-btn {
             background: rgba(255, 255, 255, 0.05);
@@ -96,9 +97,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex; flex-direction: column;
             position: relative;
-            /* Animation for filtering */
             animation: fadeIn 0.5s ease;
-            aspect-ratio: 4 / 5;
         }
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -110,11 +109,11 @@
         }
 
         .card-click-area {
-            cursor: pointer; display: flex; flex-direction: column; flex-grow: 1; overflow: hidden;
+            cursor: pointer; display: flex; flex-direction: column; flex-grow: 1;
         }
 
         .img-box {
-            width: 100%; flex: 1; border-radius: 15px;
+            width: 100%; aspect-ratio: 4 / 5; border-radius: 15px;
             overflow: hidden; margin-bottom: 15px; background: #222;
         }
 
@@ -131,24 +130,31 @@
             -webkit-line-clamp: 3; -webkit-box-orient: vertical;
             mask-image: linear-gradient(180deg, #fff 60%, transparent);
             transition: color 0.2s;
-            flex-shrink: 0;
         }
         
         .card-click-area:hover .prompt-text { color: white; }
 
-        .btn-copy {
+        /* --- NEW BUTTON ACTIONS STYLES --- */
+        .card-actions {
             margin-top: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.1);
             color: white; padding: 10px; border-radius: 10px;
             cursor: pointer; transition: 0.2s;
             display: flex; align-items: center; justify-content: center;
-            gap: 8px; font-weight: 500;
-            z-index: 2; 
-            flex-shrink: 0;
+            gap: 8px; font-weight: 500; z-index: 2; 
         }
 
-        .btn-copy:hover { background: rgba(255,255,255,0.2); border-color: var(--accent); }
+        .btn-action:hover { background: rgba(255,255,255,0.2); border-color: var(--accent); }
+        
+        /* Specific sizes */
+        .btn-copy { flex-grow: 1; }
+        .btn-share { width: 44px; flex-shrink: 0; }
 
         /* --- MODAL STYLES --- */
         .modal-overlay {
@@ -158,7 +164,6 @@
             padding: 20px; opacity: 0; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { display: flex; opacity: 1; }
-        
         .modal-content {
             background: #1e1e1e; border: 1px solid var(--glass-border);
             border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh;
@@ -166,16 +171,13 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease;
         }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #333; }
         .modal-title { font-size: 1.2rem; font-weight: 600; color: white; }
         .close-btn { background: none; border: none; color: #999; font-size: 1.5rem; cursor: pointer; }
         .close-btn:hover { color: #fff; }
-        
         .modal-scroll-area { overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
-        
         .modal-img { width: 100%; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
         .modal-text { font-size: 1rem; color: #ddd; line-height: 1.6; white-space: pre-wrap; }
         
@@ -195,13 +197,13 @@
     <header>
         <h1>PromptVault</h1>
         
-        <!-- NAVIGATION BAR -->
+        <!-- Navigation Bar -->
         <nav class="nav-container">
             <button class="nav-btn active" onclick="filterCategory('midjourney')">Midjourney</button>
             <button class="nav-btn" onclick="filterCategory('nanobanana')">Nanobanana</button>
         </nav>
 
-        <div class="counter" id="count-display">0 Prompts Available</div>
+        <div class="counter" id="count-display">Loading...</div>
     </header>
 
     <main class="container" id="grid-area">
@@ -219,7 +221,7 @@
                 <img id="modal-img" class="modal-img" src="" alt="Full Preview">
                 <div class="modal-text" id="modal-text"></div>
             </div>
-            <button class="btn-copy" style="width:100%" id="modal-copy-btn">
+            <button class="btn-action btn-copy" style="width:100%" id="modal-copy-btn">
                 <i class="fa-regular fa-copy"></i> Copy Prompt
             </button>
         </div>
@@ -230,126 +232,196 @@
         <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Copied to Clipboard!
     </div>
 
-    <!-- LINK TO YOUR DATA FILE -->
+    <!-- EXTERNAL DATA SCRIPT -->
     <script src="index.js"></script>
 
+    <!-- MAIN LOGIC SCRIPT -->
     <script>
         const grid = document.getElementById('grid-area');
         const countDisplay = document.getElementById('count-display');
+        const navContainer = document.querySelector('.nav-container');
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modal-img');
         const modalText = document.getElementById('modal-text');
         const modalCopyBtn = document.getElementById('modal-copy-btn');
         const navBtns = document.querySelectorAll('.nav-btn');
 
-        // Set Default Category
-        let currentCategory = 'midjourney'; 
+        // --- CHECK FOR SHARED ID IN URL ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const sharedId = urlParams.get('id');
 
-        // Initial Render
+        // Check if data loaded
         if (typeof allPrompts !== 'undefined') {
-            renderPrompts(currentCategory);
+            if (sharedId) {
+                // If ID exists in URL -> Render Single Card & Hide Nav
+                renderSharedCard(sharedId);
+            } else {
+                // Default -> Render Midjourney
+                renderPrompts('midjourney');
+            }
         } else {
-            grid.innerHTML = '<h3 style="color:white; text-align:center;">Error: index.js not found</h3>';
+            countDisplay.innerText = "Error: index.js not found or empty.";
         }
 
-        // --- FILTER FUNCTION ---
-        function filterCategory(category) {
-            currentCategory = category;
+        // --- RENDER SINGLE SHARED CARD ---
+        function renderSharedCard(id) {
+            // Find the card with this specific ID
+            // Note: Make sure your index.js items have "id": "1", "id": "2", etc.
+            const cardData = allPrompts.find(item => item.id == id);
+
+            if (!cardData) {
+                grid.innerHTML = `<h3 style="text-align:center; width:100%; color:#666;">
+                    Prompt not found (ID: ${id})
+                </h3>
+                <div style="text-align:center; margin-top:15px;">
+                    <a href="${window.location.pathname}" style="color:var(--accent); text-decoration:none;">Go Home</a>
+                </div>`;
+                countDisplay.innerText = "0 Prompts Found";
+                navContainer.classList.add('nav-hidden'); 
+                return;
+            }
+
+            // HIDE NAVIGATION to prevent seeing other prompts easily
+            navContainer.classList.add('nav-hidden');
+            countDisplay.innerText = "Shared Prompt";
+
+            // Render just the one card
+            grid.innerHTML = createCardHTML(cardData);
+        }
+
+        // --- RENDER NORMAL CATEGORY ---
+        function renderPrompts(category) {
+            navContainer.classList.remove('nav-hidden'); // Show nav
             
-            // 1. Highlight the correct button
+            // Update Buttons Style
             navBtns.forEach(btn => {
-                // Check if the button text contains the category name (case insensitive)
-                if(btn.innerText.toLowerCase().includes(category)) {
+                if(btn.innerText.toLowerCase() === category) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
                 }
             });
 
-            // 2. Re-render Grid
-            renderPrompts(category);
-        }
-
-        // --- RENDER FUNCTION ---
-        function renderPrompts(category) {
-            
-            // Filter Data (Handles case sensitivity automatically)
-            const filteredData = allPrompts.filter(item => 
-                item.category && item.category.toLowerCase() === category.toLowerCase()
-            );
-            
-            // Update Counter
+            const filteredData = allPrompts.filter(item => item.category === category);
             countDisplay.innerText = `${filteredData.length} Prompts Available`;
 
             if(filteredData.length === 0) {
-                grid.innerHTML = `<h3 style="text-align:center; width:100%; color:#666; grid-column: 1 / -1;">
-                    No prompts found for category: "${category}" <br>
-                    <small>(Did you add "category" to your index.js?)</small>
-                </h3>`;
+                grid.innerHTML = `<h3 style="text-align:center; width:100%; color:#666;">No prompts found for ${category}</h3>`;
                 return;
             }
 
-            // Generate HTML
-            grid.innerHTML = filteredData.map(item => {
-                const safePrompt = item.prompt.replace(/'/g, "\\'");
-                const safeImage = item.image.replace(/'/g, "\\'");
-                
-                return `
-                <div class="card">
-                    <div class="card-click-area" onclick="openModal('${safeImage}', '${safePrompt}')">
-                        <div class="img-box">
-                            <img src="${item.image}" alt="AI Art" loading="lazy">
-                        </div>
-                        <div class="prompt-text">${item.prompt}</div>
-                    </div>
-                    <button class="btn-copy" onclick="copyText(this, '${safePrompt}')">
-                        <i class="fa-regular fa-copy"></i> Copy Prompt
-                    </button>
-                </div>
-            `}).join('');
+            // Generate HTML using the helper
+            grid.innerHTML = filteredData.map(item => createCardHTML(item)).join('');
         }
 
-        // --- MODAL & COPY FUNCTIONS ---
+        // --- HELPER: CREATE CARD HTML ---
+        function createCardHTML(item) {
+            const safePrompt = item.prompt.replace(/'/g, "\\'");
+            const safeImage = item.image.replace(/'/g, "\\'");
+            const safeId = item.id || 'err'; 
+            
+            return `
+            <div class="card">
+                <div class="card-click-area" onclick="openModal('${safeImage}', '${safePrompt}')">
+                    <div class="img-box">
+                        <img src="${item.image}" alt="AI Art" loading="lazy">
+                    </div>
+                    <div class="prompt-text">${item.prompt}</div>
+                </div>
+                
+                <div class="card-actions">
+                    <button class="btn-action btn-copy" onclick="copyText(this, '${safePrompt}')">
+                        <i class="fa-regular fa-copy"></i> Copy
+                    </button>
+                    <button class="btn-action btn-share" onclick="shareCard(this, '${safeId}')" title="Share this specific card">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                </div>
+            </div>`;
+        }
+
+        // --- FILTER FUNCTION ---
+        function filterCategory(category) {
+            // Remove ?id= from URL so user goes back to normal mode if they click a filter
+            if(window.location.search.includes('id=')) {
+                window.history.pushState({}, document.title, window.location.pathname);
+            }
+            renderPrompts(category);
+        }
+
+        // --- SHARE FUNCTIONALITY ---
+        function shareCard(btn, id) {
+            if(id === 'err') {
+                showToast("Error: No ID found in index.js data");
+                return;
+            }
+
+            // Construct the share URL
+            const shareUrl = `${window.location.origin}${window.location.pathname}?id=${id}`;
+
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                showToast("Share Link Copied!");
+
+                // Visual Feedback on button
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                btn.style.borderColor = "#10b981";
+                btn.style.color = "#10b981";
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.borderColor = "";
+                    btn.style.color = "";
+                }, 2000);
+            });
+        }
+
+        // --- MODAL FUNCTIONS ---
         function openModal(imageSrc, text) {
             modalImg.src = imageSrc;
             modalText.textContent = text;
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Stop background scrolling
-            
-            // Update the copy button inside the modal to copy THIS text
-            modalCopyBtn.onclick = function() { 
-                copyText(this, text); 
-            };
+            document.body.style.overflow = 'hidden';
+            modalCopyBtn.onclick = function() { copyText(this, text); };
         }
 
         function closeModal() {
             modal.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restore scrolling
+            document.body.style.overflow = 'auto';
             setTimeout(() => { modalImg.src = ""; }, 300); 
         }
 
-        // Close when clicking outside
-        modal.addEventListener('click', (e) => { 
-            if (e.target === modal) closeModal(); 
-        });
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
+        // --- COPY & TOAST HELPER ---
         function copyText(btn, text) {
             navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                const originalHTML = btn.innerHTML;
+                showToast("Copied to Clipboard!");
                 
-                btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied`;
-                btn.style.background = "rgba(16, 185, 129, 0.2)";
-                btn.style.borderColor = "#10b981";
+                // If it's a button, give button feedback
+                if(btn) {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied`;
+                    btn.style.background = "rgba(16, 185, 129, 0.2)";
+                    btn.style.borderColor = "#10b981";
 
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    btn.innerHTML = originalHTML;
-                    btn.style.background = "";
-                    btn.style.borderColor = "";
-                }, 2000);
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.style.background = "";
+                        btn.style.borderColor = "";
+                    }, 2000);
+                }
             });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> ${message}`;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
         }
     </script>
 </body>
