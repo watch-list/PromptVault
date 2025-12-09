@@ -32,21 +32,52 @@
             z-index: -1;
         }
 
-        header { padding: 50px 20px; text-align: center; }
+        header { padding: 40px 20px 20px 20px; text-align: center; }
 
         h1 {
             font-size: 2.5rem;
             background: linear-gradient(to right, #fff, #a5b4fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
+            margin: 0 0 20px 0;
+        }
+
+        /* --- NEW NAVIGATION STYLES --- */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: #888;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+        .nav-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
         }
 
         .counter {
             margin-top: 10px; color: #6b7280; font-size: 0.9rem;
-            border: 1px solid #333; padding: 5px 15px; border-radius: 20px; display: inline-block;
+            display: inline-block;
         }
 
+        /* --- GRID & CARD STYLES --- */
         .container {
             max-width: 1200px; margin: 0 auto; padding: 20px;
             display: grid;
@@ -54,7 +85,6 @@
             gap: 30px; padding-bottom: 100px;
         }
 
-        /* --- CARD STYLING --- */
         .card {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
@@ -62,10 +92,13 @@
             border-radius: 20px;
             padding: 12px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             position: relative;
+            /* Animation for filtering */
+            animation: fadeIn 0.5s ease;
         }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .card:hover {
             transform: translateY(-5px);
@@ -73,26 +106,17 @@
             border-color: rgba(255,255,255,0.3);
         }
 
-        /* Clickable wrapper for Image and Text */
         .card-click-area {
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1; /* Pushes button down */
+            cursor: pointer; display: flex; flex-direction: column; flex-grow: 1;
         }
 
         .img-box {
-            width: 100%;
-            aspect-ratio: 4 / 5;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            background: #222;
+            width: 100%; aspect-ratio: 4 / 5; border-radius: 15px;
+            overflow: hidden; margin-bottom: 15px; background: #222;
         }
 
         .img-box img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s ease;
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
         }
 
         .card:hover .img-box img { transform: scale(1.1); }
@@ -116,7 +140,7 @@
             cursor: pointer; transition: 0.2s;
             display: flex; align-items: center; justify-content: center;
             gap: 8px; font-weight: 500;
-            z-index: 2; /* Ensures button is clickable separate from card */
+            z-index: 2; 
         }
 
         .btn-copy:hover { background: rgba(255,255,255,0.2); border-color: var(--accent); }
@@ -124,71 +148,32 @@
         /* --- MODAL STYLES --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: none; justify-content: center; align-items: center;
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px);
+            z-index: 1000; display: none; justify-content: center; align-items: center;
             padding: 20px; opacity: 0; transition: opacity 0.3s ease;
         }
-
         .modal-overlay.active { display: flex; opacity: 1; }
-
         .modal-content {
-            background: #1e1e1e;
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            width: 100%; max-width: 500px; /* Slightly narrower for better portrait viewing */
-            max-height: 90vh; /* Prevent overflow on small screens */
-            display: flex; flex-direction: column;
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transform: scale(0.9); transition: transform 0.3s ease;
+            background: #1e1e1e; border: 1px solid var(--glass-border);
+            border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh;
+            display: flex; flex-direction: column; padding: 20px; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease;
         }
-
         .modal-overlay.active .modal-content { transform: scale(1); }
-
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #333;
-        }
-
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #333; }
         .modal-title { font-size: 1.2rem; font-weight: 600; color: white; }
         .close-btn { background: none; border: none; color: #999; font-size: 1.5rem; cursor: pointer; }
         .close-btn:hover { color: #fff; }
-
-        /* Modal Body Scrollable Area */
-        .modal-scroll-area {
-            overflow-y: auto;
-            padding-right: 5px;
-            margin-bottom: 15px;
-        }
-
+        .modal-scroll-area { overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
-
-        /* Modal Image */
-        .modal-img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-
-        .modal-text {
-            font-size: 1rem; color: #ddd; line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        /* Toast */
+        .modal-img { width: 100%; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        .modal-text { font-size: 1rem; color: #ddd; line-height: 1.6; white-space: pre-wrap; }
         .toast {
-            position: fixed; bottom: 30px; left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #fff; color: #000; padding: 12px 30px;
-            border-radius: 50px; font-weight: bold; opacity: 0;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 1100;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #fff; color: #000; padding: 12px 30px; border-radius: 50px; font-weight: bold;
+            opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 1100;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
@@ -199,28 +184,31 @@
 
     <header>
         <h1>PromptVault</h1>
+        
+        <!-- NEW NAVIGATION BAR -->
+        <nav class="nav-container">
+            <button class="nav-btn active" onclick="filterCategory('midjourney')">Midjourney</button>
+            <button class="nav-btn" onclick="filterCategory('nanobanana')">Nanobanana</button>
+        </nav>
+
         <div class="counter" id="count-display">0 Prompts Available</div>
     </header>
 
     <main class="container" id="grid-area">
-        <!-- Cards load here automatically -->
+        <!-- Cards load here -->
     </main>
 
-    <!-- --- MODAL WITH IMAGE & TEXT --- -->
+    <!-- Modal and Toast code remains the same -->
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">Details</div>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            
             <div class="modal-scroll-area">
-                <!-- Image Container -->
                 <img id="modal-img" class="modal-img" src="" alt="Full Preview">
-                <!-- Text Container -->
                 <div class="modal-text" id="modal-text"></div>
             </div>
-
             <button class="btn-copy" style="width:100%" id="modal-copy-btn">
                 <i class="fa-regular fa-copy"></i> Copy Prompt
             </button>
@@ -240,27 +228,58 @@
         const modalImg = document.getElementById('modal-img');
         const modalText = document.getElementById('modal-text');
         const modalCopyBtn = document.getElementById('modal-copy-btn');
+        const navBtns = document.querySelectorAll('.nav-btn');
 
+        // Initialize view with Midjourney by default
+        let currentCategory = 'midjourney'; 
+
+        // Check if data loaded
         if (typeof allPrompts !== 'undefined') {
-            countDisplay.innerText = `${allPrompts.length} Prompts Available`;
+            renderPrompts(currentCategory);
+        }
 
-            grid.innerHTML = allPrompts.map(item => {
+        // --- FILTER FUNCTION ---
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // Update Buttons Style
+            navBtns.forEach(btn => {
+                if(btn.innerText.toLowerCase() === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            renderPrompts(category);
+        }
+
+        // --- RENDER FUNCTION ---
+        function renderPrompts(category) {
+            // Filter the array based on the added 'category' key
+            const filteredData = allPrompts.filter(item => item.category === category);
+            
+            // Update Counter
+            countDisplay.innerText = `${filteredData.length} Prompts Available`;
+
+            if(filteredData.length === 0) {
+                grid.innerHTML = `<h3 style="text-align:center; width:100%; color:#666;">No prompts found for ${category}</h3>`;
+                return;
+            }
+
+            // Generate HTML
+            grid.innerHTML = filteredData.map(item => {
                 const safePrompt = item.prompt.replace(/'/g, "\\'");
-                const safeImage = item.image.replace(/'/g, "\\'"); // Handle quotes in URLs just in case
+                const safeImage = item.image.replace(/'/g, "\\'");
                 
                 return `
                 <div class="card">
-                    <!-- Clickable Area Wrapper (Image + Text) -->
                     <div class="card-click-area" onclick="openModal('${safeImage}', '${safePrompt}')">
                         <div class="img-box">
                             <img src="${item.image}" alt="AI Art" loading="lazy">
                         </div>
-                        <div class="prompt-text">
-                            ${item.prompt}
-                        </div>
+                        <div class="prompt-text">${item.prompt}</div>
                     </div>
-                    
-                    <!-- Copy Button (Separate click event) -->
                     <button class="btn-copy" onclick="copyText(this, '${safePrompt}')">
                         <i class="fa-regular fa-copy"></i> Copy Prompt
                     </button>
@@ -268,46 +287,30 @@
             `}).join('');
         }
 
-        // --- UPDATED MODAL FUNCTION ---
+        // --- MODAL FUNCTIONS (Same as before) ---
         function openModal(imageSrc, text) {
-            modalImg.src = imageSrc; // Set Image
-            modalText.textContent = text; // Set Text
-            
+            modalImg.src = imageSrc;
+            modalText.textContent = text;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
-
-            // Setup the Copy Button inside Modal
-            modalCopyBtn.onclick = function() {
-                copyText(this, text);
-            };
+            modalCopyBtn.onclick = function() { copyText(this, text); };
         }
 
         function closeModal() {
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
-            // Clear src to stop memory leaks or flashes of old images
             setTimeout(() => { modalImg.src = ""; }, 300); 
         }
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
-        });
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
         function copyText(btn, text) {
             navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById('toast');
                 toast.classList.add('show');
-                
                 const originalHTML = btn.innerHTML;
-                const originalBg = btn.style.background;
-                const originalBorder = btn.style.borderColor;
-
+                
                 btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied`;
                 btn.style.background = "rgba(16, 185, 129, 0.2)";
                 btn.style.borderColor = "#10b981";
@@ -315,8 +318,8 @@
                 setTimeout(() => {
                     toast.classList.remove('show');
                     btn.innerHTML = originalHTML;
-                    btn.style.background = originalBg;
-                    btn.style.borderColor = originalBorder;
+                    btn.style.background = "";
+                    btn.style.borderColor = "";
                 }, 2000);
             });
         }
