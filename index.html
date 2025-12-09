@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt Store</title>
+    <title>PromptVault</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- KEEP YOUR EXISTING CSS HERE --- */
-        /* I am adding only the NEW CSS for Sharing and Modals below */
-        
         :root {
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.15);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --accent: #00d2ff;
         }
 
@@ -21,10 +20,12 @@
             background-color: #0f0f0f;
             color: #ffffff;
             font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
             margin: 0;
             overflow-x: hidden;
         }
 
+        /* Animated Background */
         .bg-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -33,44 +34,101 @@
             z-index: -1;
         }
 
+        header {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .counter {
+            margin-top: 10px;
+            color: #6b7280;
+            font-size: 0.9rem;
+            border: 1px solid #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Grid Layout */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
             gap: 25px;
-            padding-top: 80px; /* Space for header */
+            padding-bottom: 100px;
         }
 
+        /* Glass Card Style */
         .card {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
-            transition: 0.3s;
+            aspect-ratio: 4 / 5;
+            overflow: hidden; 
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.3);
         }
 
         .img-box {
-            height: 220px;
+            flex: 1; 
+            width: 100%;
+            min-height: 0;
             border-radius: 15px;
             overflow: hidden;
             margin-bottom: 15px;
-        }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .prompt-text {
-            font-size: 0.85rem; color: #ccc;
-            height: 60px; overflow: hidden;
-            margin-bottom: 15px;
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+            position: relative;
         }
 
-        /* BUTTON GROUP */
-        .btn-group { display: flex; gap: 10px; margin-top: auto; }
-        
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .img-box img { transform: scale(1.1); }
+
+        .prompt-text {
+            font-size: 0.85rem;
+            color: #ccc;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            height: 60px; 
+            flex-shrink: 0; 
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            mask-image: linear-gradient(180deg, #fff 60%, transparent);
+        }
+
+        /* --- BUTTON GROUP FOR SHARE & COPY --- */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
         .btn {
             border: 1px solid rgba(255,255,255,0.1);
             color: white;
@@ -93,8 +151,8 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8);
             backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: none; /* Hidden by default */
+            z-index: 2000; /* Higher than everything */
+            display: none;
             align-items: center; justify-content: center;
             opacity: 0; transition: opacity 0.3s ease;
         }
@@ -123,22 +181,23 @@
             background: rgba(255,255,255,0.05); 
             padding: 15px; border-radius: 10px; 
             font-size: 0.95rem; line-height: 1.6; color: #ddd;
-            user-select: all; /* Makes text easy to select */
+            user-select: all;
             max-height: 200px; overflow-y: auto;
         }
 
-        /* Header Style */
-        header { text-align: center; padding: 40px 20px; }
-        h1 { margin: 0; background: linear-gradient(to right, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem;}
-
-        /* Toast */
+        /* Toast Notification */
         .toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: white; color: black; padding: 12px 30px; border-radius: 50px;
-            font-weight: bold; transition: 0.4s; z-index: 2000;
+            position: fixed;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #fff; color: #000;
+            padding: 12px 30px; border-radius: 50px; font-weight: bold;
+            opacity: 0; transition: 0.4s;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            z-index: 3000;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); }
-
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
@@ -146,8 +205,8 @@
     <div class="bg-gradient"></div>
 
     <header>
-        <h1>Prompt Store</h1>
-        <p style="color:#888;">AI Art Collection</p>
+        <h1>PromptVault</h1>
+        <div class="counter" id="count-display">0 Prompts Available</div>
     </header>
 
     <!-- Main Grid -->
@@ -167,20 +226,27 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">Link Copied!</div>
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Action Successful
+    </div>
 
-    <script src="prompts.js"></script>
+    <!-- IMPORTANT: Link to your data file (make sure it is index.js or prompts.js) -->
+    <script src="index.js"></script>
 
     <script>
         const grid = document.getElementById('grid-area');
-        
-        // 1. GENERATE GRID
+        const countDisplay = document.getElementById('count-display');
+        const modal = document.getElementById('modal');
+
+        // 1. LOAD DATA & GENERATE CARDS
         if (typeof allPrompts !== 'undefined') {
+            countDisplay.innerText = `${allPrompts.length} Prompts Available`;
+
             grid.innerHTML = allPrompts.map(item => `
                 <div class="card" id="card-${item.id}">
                     <div class="img-box">
-                        <img src="${item.image}" loading="lazy" alt="Prompt Image">
+                        <img src="${item.image}" alt="AI Art" loading="lazy">
                     </div>
                     <div class="prompt-text">${item.prompt}</div>
                     
@@ -194,14 +260,16 @@
                     </div>
                 </div>
             `).join('');
+        } else {
+            grid.innerHTML = "<h3 style='text-align:center; width:100%'>Error: index.js not found or variables missing</h3>";
         }
 
-        // 2. CHECK URL ON LOAD (Did someone open a shared link?)
+        // 2. CHECK FOR SHARED LINK (Deep Linking)
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const sharedId = urlParams.get('id');
 
-            if (sharedId) {
+            if (sharedId && typeof allPrompts !== 'undefined') {
                 const foundPrompt = allPrompts.find(p => p.id == sharedId);
                 if (foundPrompt) {
                     openModal(foundPrompt);
@@ -209,57 +277,39 @@
             }
         };
 
-        // 3. SHARE FUNCTION
+        // 3. SHARE LOGIC
         async function shareCard(id) {
-            // Create the unique link
             const shareUrl = `${window.location.origin}${window.location.pathname}?id=${id}`;
             const shareData = {
-                title: 'Check out this AI Prompt',
-                text: 'I found this cool prompt on Prompt Store:',
+                title: 'PromptVault Art',
+                text: 'Check out this prompt on PromptVault:',
                 url: shareUrl
             };
 
-            // Use Native Mobile Share if available
             if (navigator.share) {
                 try {
                     await navigator.share(shareData);
-                } catch (err) {
-                    console.log('Error sharing:', err);
-                }
+                } catch (err) { console.log('Share cancelled'); }
             } else {
-                // Desktop Fallback: Copy URL to clipboard
                 navigator.clipboard.writeText(shareUrl);
                 showToast("Link Copied to Clipboard!");
             }
         }
 
-        // 4. MODAL FUNCTIONS
-        const modal = document.getElementById('modal');
-        
-        function openModal(item) {
-            document.getElementById('modal-img').src = item.image;
-            document.getElementById('modal-text').innerText = item.prompt;
-            modal.classList.add('active');
-        }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            // Remove the ?id=... from the URL so refreshing doesn't re-open it
-            window.history.pushState({}, document.title, window.location.pathname);
-        }
-
-        // Close modal if clicking outside the card
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // 5. COPY FUNCTIONS
+        // 4. COPY LOGIC
         function copyText(btn, text) {
-            navigator.clipboard.writeText(text);
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied`;
-            setTimeout(() => btn.innerHTML = originalHTML, 2000);
-            showToast("Prompt Copied!");
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Prompt Copied!");
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied`;
+                btn.style.background = "rgba(16, 185, 129, 0.2)";
+                btn.style.borderColor = "#10b981";
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = "";
+                    btn.style.borderColor = "";
+                }, 2000);
+            });
         }
 
         function copyFromModal() {
@@ -268,13 +318,29 @@
             showToast("Prompt Copied!");
         }
 
+        // 5. MODAL LOGIC
+        function openModal(item) {
+            document.getElementById('modal-img').src = item.image;
+            document.getElementById('modal-text').innerText = item.prompt;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            window.history.pushState({}, document.title, window.location.pathname);
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Helper: Toast
         function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.innerText = msg;
+            toast.innerHTML = `<i class="fa-solid fa-check-circle" style="color: #10b981;"></i> ${msg}`;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
-
     </script>
 </body>
 </html>
