@@ -13,7 +13,7 @@ const allPrompts = [
         category: "nanobanana"  // <--- ADD THIS
     },
     {
-        image: "https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?q=80&w=1000",
+        image: "Gemini_Generated_Image_om4ivxom4ivxom4i.png",
         prompt: "Isometric view of a cozy magic potion shop, low poly 3d art, purple and orange color palette, glowing bottles, tiny details, cute atmosphere.",
         category: "midjourney"
     }
