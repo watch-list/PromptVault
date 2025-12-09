@@ -184,4 +184,60 @@
     </main>
 
     <div class="toast" id="toast">
-        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Copied to Clipb
+        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Copied to Clipboard!
+    </div>
+
+    <!-- IMPORTANT: Link to your data file -->
+    <script src="index.js"></script>
+
+    <script>
+        // Main Application Logic
+        const grid = document.getElementById('grid-area');
+        const countDisplay = document.getElementById('count-display');
+
+        // Check if prompts exist
+        if (typeof allPrompts !== 'undefined') {
+            
+            // Update Counter
+            countDisplay.innerText = `${allPrompts.length} Prompts Available`;
+
+            // Generate HTML
+            grid.innerHTML = allPrompts.map(item => `
+                <div class="card">
+                    <div class="img-box">
+                        <img src="${item.image}" alt="AI Art" loading="lazy">
+                    </div>
+                    <div class="prompt-text">${item.prompt}</div>
+                    <button class="btn-copy" onclick="copyText(this, '${item.prompt.replace(/'/g, "\\'")}')">
+                        <i class="fa-regular fa-copy"></i> Copy Prompt
+                    </button>
+                </div>
+            `).join('');
+        } else {
+            grid.innerHTML = "<h3 style='text-align:center; width:100%'>Error: prompts.js not found</h3>";
+        }
+
+        // Copy Function
+        function copyText(btn, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show Toast
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                
+                // Button Feedback
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied`;
+                btn.style.background = "rgba(16, 185, 129, 0.2)";
+                btn.style.borderColor = "#10b981";
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = "";
+                    btn.style.borderColor = "";
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
