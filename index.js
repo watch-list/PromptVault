@@ -3,17 +3,17 @@
 
 const allPrompts = [
     {
-        image: "midjourney1.png",
+        image: "https://unsplash.com/photos/three-silver-house-christmas-ornaments-hanging-a7Y8uDc6yKU",
         prompt: "A futuristic city...",
         category: "midjourney"  // <--- ADD THIS
     },
     {
-        image: "banana1.png",
+        image: "https://unsplash.com/photos/frozen-bubble-with-ice-crystals-and-bokeh-lights-7M97HYNlgKY",
         prompt: "A cute banana character...",
         category: "nanobanana"  // <--- ADD THIS
     },
     {
-        image: "midjourney2.png",
+        image: "https://unsplash.com/photos/laptop-tablet-and-phone-on-a-wooden-desk-9-To59dy6Kg",
         prompt: "Cyberpunk street...",
         category: "midjourney"
     }
