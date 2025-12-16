@@ -1,327 +1,1667 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PromptVault</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromptVault — Premium AI Prompt Collection</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* ============================================
+           CSS RESET & BASE STYLES
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+        :root {
+            /* Primary Colors */
+            --primary: #FF3B3B;
+            --primary-hover: #FF5252;
+            --primary-muted: rgba(255, 59, 59, 0.15);
+            
+            /* Secondary Colors */
+            --secondary: #FFD93D;
+            --secondary-muted: rgba(255, 217, 61, 0.15);
+            
+            /* Surfaces */
+            --background: #000000;
+            --surface: #0A0A0A;
+            --surface-elevated: #141414;
+            --surface-hover: #1F1F1F;
+            --border: #2A2A2A;
+            
+            /* Text */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            
+            /* Spacing */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            --space-16: 64px;
+            --space-20: 80px;
+            
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Transitions */
+            --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-image: 700ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-<style>
-:root{
-  --bg:#0a0a0a;
-  --surface:#111;
-  --border:#1f1f1f;
+        html {
+            scroll-behavior: smooth;
+        }
 
-  --accent:#FF3B3B;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-  --text:#ffffff;
-  --muted:#a0a0a0;
-}
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
 
-*{box-sizing:border-box}
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Poppins',sans-serif;
-}
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
 
-/* ===== LAYOUT ===== */
-.wrapper{
-  max-width:1280px;
-  margin:auto;
-  padding:48px 24px 120px;
-}
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
 
-/* ===== HEADER (EDITORIAL) ===== */
-.header{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-  margin-bottom:60px;
-}
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
 
-.brand{
-  font-family:'Unbounded',sans-serif;
-  font-size:3.2rem;
-  letter-spacing:.14em;
-  color:var(--accent);
-}
+        .display {
+            font-size: clamp(48px, 10vw, 72px);
+            letter-spacing: -0.02em;
+        }
 
-.tagline{
-  margin-top:14px;
-  max-width:420px;
-  font-size:.95rem;
-  color:var(--muted);
-  line-height:1.6;
-}
+        h1 {
+            font-size: clamp(32px, 6vw, 48px);
+            letter-spacing: -0.015em;
+        }
 
-/* SEARCH */
-.search{
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  justify-content:center;
-}
+        h2 {
+            font-size: clamp(24px, 4vw, 36px);
+            letter-spacing: -0.01em;
+        }
 
-.search input{
-  width:100%;
-  background:transparent;
-  border:none;
-  border-bottom:1px solid var(--border);
-  padding:14px 0;
-  font-size:1.1rem;
-  color:white;
-}
+        h3 {
+            font-size: clamp(18px, 3vw, 24px);
+            letter-spacing: -0.005em;
+        }
 
-.search input::placeholder{
-  color:#666;
-}
+        /* ============================================
+           UTILITY CLASSES
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
 
-/* FILTERS */
-.filters{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-}
+        @media (min-width: 640px) {
+            .container {
+                padding: 0 var(--space-6);
+            }
+        }
 
-.filters button{
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--muted);
-  padding:8px 18px;
-  border-radius:999px;
-  font-size:.75rem;
-  letter-spacing:.12em;
-  cursor:pointer;
-}
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 var(--space-8);
+            }
+        }
 
-.filters button.active{
-  background:var(--accent);
-  color:black;
-  border-color:var(--accent);
-}
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), #FF6B6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-/* ===== GRID ===== */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:32px;
-}
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-/* ===== CARD (MINIMAL) ===== */
-.card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:14px;
-  transition:.3s;
-}
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
 
-.card:hover{
-  transform:translateY(-6px);
-  border-color:#333;
-}
+        /* ============================================
+           HEADER / NAVIGATION
+           ============================================ */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
 
-/* IMAGE */
-.image{
-  aspect-ratio:4/5;
-  border-radius:14px;
-  overflow:hidden;
-  background:#000;
-  cursor:pointer;
-}
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
 
-.image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+        @media (min-width: 640px) {
+            .header-content {
+                height: 80px;
+            }
+        }
 
-/* TEXT */
-.prompt{
-  margin:14px 0;
-  font-size:.85rem;
-  line-height:1.6;
-  color:#d8d8d8;
-  height:60px;
-  overflow:hidden;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            text-decoration: none;
+        }
 
-/* TAGS */
-.tags{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.tag{
-  font-size:.65rem;
-  padding:4px 10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  color:var(--muted);
-}
+        .logo-icon span {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
 
-.tag.zimage{color:var(--accent);border-color:var(--accent)}
-.tag.nanobanana{color:#FFD400;border-color:#FFD400}
+        .logo-text {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--text-primary);
+            display: none;
+        }
 
-/* ===== FULL VIEW (READER MODE) ===== */
-.viewer{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:none;
-  z-index:9999;
-}
+        @media (min-width: 640px) {
+            .logo-text {
+                display: block;
+            }
+        }
 
-.viewer.active{display:block}
+        /* Search Bar */
+        .search-container {
+            display: none;
+            flex: 1;
+            max-width: 480px;
+            margin: 0 var(--space-8);
+        }
 
-.viewer img{
-  width:100%;
-  max-height:70vh;
-  object-fit:contain;
-}
+        @media (min-width: 768px) {
+            .search-container {
+                display: block;
+            }
+        }
 
-.viewer-content{
-  max-width:720px;
-  margin:auto;
-  padding:24px;
-}
+        .search-wrapper {
+            position: relative;
+        }
 
-.viewer-text{
-  white-space:pre-wrap;
-  line-height:1.7;
-  color:#eee;
-}
+        .search-icon {
+            position: absolute;
+            left: var(--space-4);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: color var(--transition-base);
+        }
 
-.viewer button{
-  margin-top:20px;
-  width:100%;
-  background:var(--accent);
-  color:black;
-  border:none;
-  padding:14px;
-  border-radius:14px;
-  font-weight:600;
-  cursor:pointer;
-}
+        .search-input {
+            width: 100%;
+            padding: var(--space-3) var(--space-4) var(--space-3) var(--space-12);
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all var(--transition-base);
+        }
 
-.close{
-  position:fixed;
-  top:18px;
-  right:22px;
-  color:#aaa;
-  cursor:pointer;
-  font-size:1.2rem;
-}
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
 
-/* ===== MOBILE ===== */
-@media(max-width:900px){
-  .header{
-    grid-template-columns:1fr;
-  }
-}
-</style>
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-muted);
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--primary);
+        }
+
+        /* Filter Pills */
+        .filter-pills {
+            display: none;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        @media (min-width: 1024px) {
+            .filter-pills {
+                display: flex;
+            }
+        }
+
+        .filter-pill {
+            padding: var(--space-2) var(--space-5);
+            border-radius: var(--radius-full);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: 1px solid var(--border);
+            background: var(--surface-elevated);
+            color: var(--text-secondary);
+        }
+
+        .filter-pill:hover {
+            background: var(--surface-hover);
+            border-color: var(--text-muted);
+        }
+
+        .filter-pill.active {
+            border-color: transparent;
+            transform: scale(1.02);
+        }
+
+        .filter-pill.active[data-filter="All"],
+        .filter-pill.active[data-filter="ZIMAGE"] {
+            background: var(--primary);
+            color: white;
+        }
+
+        .filter-pill.active[data-filter="NanoBanana"] {
+            background: var(--secondary);
+            color: black;
+        }
+
+        /* Mobile Menu Button */
+        .menu-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--surface-elevated);
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        @media (min-width: 1024px) {
+            .menu-button {
+                display: none;
+            }
+        }
+
+        /* Mobile Search & Filters */
+        .mobile-search {
+            padding: 0 var(--space-4) var(--space-4);
+        }
+
+        @media (min-width: 768px) {
+            .mobile-search {
+                display: none;
+            }
+        }
+
+        .mobile-search .search-wrapper {
+            margin-bottom: var(--space-3);
+        }
+
+        .mobile-filters {
+            display: flex;
+            gap: var(--space-2);
+            overflow-x: auto;
+            padding-bottom: var(--space-2);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .mobile-filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .mobile-filters {
+                display: none;
+            }
+        }
+
+        .mobile-filters .filter-pill {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            padding-top: 160px;
+            padding-bottom: var(--space-16);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (min-width: 640px) {
+            .hero {
+                padding-top: 200px;
+                padding-bottom: var(--space-20);
+            }
+        }
+
+        .hero-gradient {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% 0%, var(--primary-muted) 0%, transparent 60%);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: var(--primary-muted);
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-8);
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .hero-badge-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .hero-title {
+            margin-bottom: var(--space-6);
+        }
+
+        .hero-title-accent {
+            color: var(--primary);
+        }
+
+        .hero-description {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto var(--space-12);
+            line-height: 1.7;
+        }
+
+        .hero-description strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Stats */
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-8);
+        }
+
+        @media (min-width: 640px) {
+            .hero-stats {
+                gap: var(--space-16);
+            }
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Unbounded', sans-serif;
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: var(--space-1);
+        }
+
+        /* ============================================
+           PROMPT GRID SECTION
+           ============================================ */
+        .prompts-section {
+            padding-bottom: var(--space-20);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: var(--space-8);
+        }
+
+        .section-title {
+            color: var(--text-primary);
+        }
+
+        .section-count {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: var(--space-1);
+        }
+
+        /* Prompt Grid */
+        .prompt-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-6);
+        }
+
+        @media (min-width: 640px) {
+            .prompt-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .prompt-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Prompt Card */
+        .prompt-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--transition-slow);
+            border: 1px solid transparent;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--border);
+            box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-image-container {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-image);
+        }
+
+        .prompt-card:hover .card-image {
+            transform: scale(1.1);
+        }
+
+        .card-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
+            opacity: 0.7;
+            transition: opacity var(--transition-base);
+        }
+
+        .prompt-card:hover .card-gradient {
+            opacity: 1;
+        }
+
+        .card-category {
+            position: absolute;
+            top: var(--space-4);
+            left: var(--space-4);
+            padding: 6px var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .card-category.zimage {
+            background: var(--primary-muted);
+            color: var(--primary);
+        }
+
+        .card-category.nanobanana {
+            background: var(--secondary-muted);
+            color: var(--secondary);
+        }
+
+        .card-actions {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            display: flex;
+            gap: var(--space-2);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all var(--transition-base);
+        }
+
+        .prompt-card:hover .card-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-action-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: none;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--text-primary);
+        }
+
+        .card-action-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-content-overlay {
+            position: absolute;
+            bottom: var(--space-4);
+            left: var(--space-4);
+            right: var(--space-4);
+            transition: transform var(--transition-base);
+        }
+
+        .prompt-card:hover .card-content-overlay {
+            transform: translateY(-4px);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: var(--space-1);
+        }
+
+        .card-preview {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Card Footer */
+        .card-footer {
+            padding: var(--space-4);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2);
+            margin-bottom: var(--space-3);
+        }
+
+        .card-tag {
+            padding: var(--space-1) var(--space-2);
+            background: var(--surface-elevated);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .card-tag.more {
+            color: var(--text-muted);
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .card-copies {
+            color: var(--text-muted);
+        }
+
+        .card-view {
+            font-weight: 500;
+        }
+
+        .card-view.zimage {
+            color: var(--primary);
+        }
+
+        .card-view.nanobanana {
+            color: var(--secondary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-20) 0;
+        }
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--surface-elevated);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-6);
+            color: var(--text-muted);
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .empty-description {
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           FULL-SCREEN PROMPT VIEWER (MODAL)
+           ============================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            transition: transform var(--transition-base);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        @media (min-width: 1024px) {
+            .modal-content {
+                flex-direction: row;
+            }
+        }
+
+        /* Modal Image */
+        .modal-image-section {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .modal-image-section {
+                width: 60%;
+            }
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        @media (min-width: 640px) {
+            .modal-image {
+                height: 350px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .modal-image {
+                height: 100%;
+                min-height: 500px;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: var(--space-4);
+            left: var(--space-4);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: none;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--text-primary);
+        }
+
+        .modal-close:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-category {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .modal-category.zimage {
+            background: var(--primary-muted);
+            color: var(--primary);
+        }
+
+        .modal-category.nanobanana {
+            background: var(--secondary-muted);
+            color: var(--secondary);
+        }
+
+        /* Modal Details */
+        .modal-details {
+            flex: 1;
+            padding: var(--space-6);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 1024px) {
+            .modal-details {
+                padding: var(--space-8);
+                width: 40%;
+            }
+        }
+
+        .modal-title {
+            font-size: clamp(24px, 4vw, 32px);
+            margin-bottom: var(--space-4);
+        }
+
+        .modal-prompt-box {
+            flex: 1;
+            padding: var(--space-4);
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-6);
+            min-height: 120px;
+        }
+
+        .modal-prompt-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        /* Modal Tags */
+        .modal-tags-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .modal-tags-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-3);
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2);
+        }
+
+        .modal-tag {
+            padding: 6px var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .modal-tag.primary {
+            background: var(--primary-muted);
+            color: var(--primary);
+        }
+
+        .modal-tag.primary.nanobanana {
+            background: var(--secondary-muted);
+            color: var(--secondary);
+        }
+
+        .modal-tag.default {
+            background: var(--surface-elevated);
+            color: var(--text-secondary);
+        }
+
+        /* Modal Stats */
+        .modal-stats {
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            padding: var(--space-4) 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: var(--space-8);
+        }
+
+        .modal-stat-value {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Modal Actions */
+        .modal-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-md);
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            width: 52px;
+            padding: var(--space-4);
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        /* ============================================
+           TOAST NOTIFICATION
+           ============================================ */
+        .toast {
+            position: fixed;
+            bottom: var(--space-8);
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-6);
+            background: var(--primary);
+            border-radius: var(--radius-full);
+            color: white;
+            font-weight: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+            z-index: 300;
+        }
+
+        .toast.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: var(--space-8) 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .footer-text a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        .stagger-6 { animation-delay: 0.6s; }
+    </style>
 </head>
-
 <body>
+    <!-- ============================================
+         HEADER / NAVIGATION
+         ============================================ -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo -->
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <span>P</span>
+                    </div>
+                    <span class="logo-text">PromptVault</span>
+                </a>
 
-<div class="wrapper">
+                <!-- Search Bar (Desktop) -->
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            id="search-desktop"
+                            placeholder="Search prompts, tags, styles..."
+                        >
+                        <i data-lucide="search" class="search-icon" style="width: 20px; height: 20px;"></i>
+                    </div>
+                </div>
 
-  <!-- HEADER -->
-  <section class="header">
-    <div>
-      <div class="brand">PROMPTVAULT</div>
-      <div class="tagline">
-        A curated vault of high-quality AI image prompts.
-        Designed for creators, artists, and visual thinkers.
-      </div>
+                <!-- Filter Pills (Desktop) -->
+                <div class="filter-pills">
+                    <button class="filter-pill active" data-filter="All">All</button>
+                    <button class="filter-pill" data-filter="NanoBanana">NanoBanana</button>
+                    <button class="filter-pill" data-filter="ZIMAGE">ZIMAGE</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="menu-button" aria-label="Menu">
+                    <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Search & Filters -->
+            <div class="mobile-search">
+                <div class="search-wrapper">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="search-mobile"
+                        placeholder="Search prompts..."
+                    >
+                    <i data-lucide="search" class="search-icon" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="mobile-filters">
+                    <button class="filter-pill active" data-filter="All">All</button>
+                    <button class="filter-pill" data-filter="NanoBanana">NanoBanana</button>
+                    <button class="filter-pill" data-filter="ZIMAGE">ZIMAGE</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+         HERO SECTION
+         ============================================ -->
+    <section class="hero">
+        <div class="hero-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <!-- Badge -->
+                <div class="hero-badge fade-in">
+                    <span class="hero-badge-dot"></span>
+                    <span class="hero-badge-text">2,400+ Creative Prompts Available</span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="display hero-title fade-in stagger-1">
+                    Prompt<span class="hero-title-accent">Vault</span>
+                </h1>
+
+                <!-- Description -->
+                <p class="hero-description fade-in stagger-2">
+                    Curated collection of premium AI prompts for 
+                    <strong>stunning visuals</strong>. 
+                    Copy. Create. Inspire.
+                </p>
+
+                <!-- Stats -->
+                <div class="hero-stats">
+                    <div class="stat-item fade-in stagger-3">
+                        <div class="stat-value">2.4K+</div>
+                        <div class="stat-label">Prompts</div>
+                    </div>
+                    <div class="stat-item fade-in stagger-4">
+                        <div class="stat-value">156K</div>
+                        <div class="stat-label">Copies</div>
+                    </div>
+                    <div class="stat-item fade-in stagger-5">
+                        <div class="stat-value">12K</div>
+                        <div class="stat-label">Creators</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PROMPTS GRID SECTION
+         ============================================ -->
+    <section class="prompts-section">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header fade-in stagger-6">
+                <div>
+                    <h2 class="section-title" id="section-title">All Prompts</h2>
+                    <p class="section-count" id="prompts-count">6 prompts found</p>
+                </div>
+            </div>
+
+            <!-- Prompt Grid -->
+            <div class="prompt-grid" id="prompt-grid">
+                <!-- Cards will be inserted by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i data-lucide="search" style="width: 24px; height: 24px;"></i>
+                </div>
+                <h3 class="empty-title">No prompts found</h3>
+                <p class="empty-description">Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                © 2025 <a href="#">PromptVault</a>. Crafted with passion for AI creators.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         MODAL (Full-Screen Prompt Viewer)
+         ============================================ -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <!-- Image Section -->
+            <div class="modal-image-section">
+                <img 
+                    src="" 
+                    alt="" 
+                    class="modal-image"
+                    id="modal-image"
+                >
+                <button class="modal-close" id="modal-close" aria-label="Close">
+                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+                </button>
+                <span class="modal-category" id="modal-category"></span>
+            </div>
+
+            <!-- Details Section -->
+            <div class="modal-details">
+                <h2 class="modal-title" id="modal-title"></h2>
+
+                <!-- Prompt Text -->
+                <div class="modal-prompt-box">
+                    <p class="modal-prompt-text" id="modal-prompt"></p>
+                </div>
+
+                <!-- Tags -->
+                <div class="modal-tags-section">
+                    <p class="modal-tags-label">Tags</p>
+                    <div class="modal-tags" id="modal-tags"></div>
+                </div>
+
+                <!-- Stats -->
+                <div class="modal-stats">
+                    <div>
+                        <div class="modal-stat-value" id="modal-copies"></div>
+                        <div class="modal-stat-label">Total Copies</div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="modal-copy-btn">
+                        <i data-lucide="copy" style="width: 20px; height: 20px;"></i>
+                        <span>Copy Prompt</span>
+                    </button>
+                    <button class="btn btn-secondary" aria-label="Share">
+                        <i data-lucide="share-2" style="width: 20px; height: 20px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="search">
-      <input id="search" placeholder="Search prompts, styles, tags…" />
-      <div class="filters">
-        <button class="active" onclick="filterCat('all')">ALL</button>
-        <button onclick="filterCat('nanobanana')">NANOBANANA</button>
-        <button onclick="filterCat('zimage')">ZIMAGE</button>
-      </div>
+    <!-- ============================================
+         TOAST NOTIFICATION
+         ============================================ -->
+    <div class="toast" id="toast">
+        <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+        <span>Prompt copied to clipboard</span>
     </div>
-  </section>
 
-  <!-- GRID -->
-  <section class="grid" id="grid"></section>
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
 
-</div>
+        // ============================================
+        // SAMPLE DATA
+        // ============================================
+        const prompts = [
+            {
+                id: 1,
+                title: "Cyberpunk Street Scene",
+                prompt: "A neon-lit cyberpunk street at night, rain-soaked pavement reflecting holographic advertisements, steam rising from vents, ultra detailed, cinematic lighting, 8k resolution",
+                image: "https://images.unsplash.com/photo-1545486332-9e0999c535b2?w=800&h=600&fit=crop",
+                category: "ZIMAGE",
+                tags: ["cyberpunk", "night", "urban", "neon"],
+                copies: 1247
+            },
+            {
+                id: 2,
+                title: "Ethereal Forest Spirit",
+                prompt: "An ancient forest spirit emerging from morning mist, bioluminescent flora, magical atmosphere, soft ethereal lighting, fantasy art style, highly detailed",
+                image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=600&fit=crop",
+                category: "NanoBanana",
+                tags: ["fantasy", "nature", "mystical", "spirit"],
+                copies: 892
+            },
+            {
+                id: 3,
+                title: "Minimal Architecture",
+                prompt: "Clean minimalist architecture, white concrete walls, geometric shadows, brutalist influence, natural lighting through large windows, architectural photography",
+                image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&h=600&fit=crop",
+                category: "ZIMAGE",
+                tags: ["architecture", "minimal", "modern"],
+                copies: 2103
+            },
+            {
+                id: 4,
+                title: "Abstract Color Flow",
+                prompt: "Fluid abstract art with vibrant color gradients, smooth organic shapes flowing through space, digital painting, high contrast, artistic composition",
+                image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&h=600&fit=crop",
+                category: "NanoBanana",
+                tags: ["abstract", "colorful", "art", "fluid"],
+                copies: 756
+            },
+            {
+                id: 5,
+                title: "Vintage Film Portrait",
+                prompt: "Cinematic portrait with vintage film grain, warm color grading, soft bokeh background, natural window lighting, analog photography aesthetic, emotional",
+                image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&h=600&fit=crop",
+                category: "ZIMAGE",
+                tags: ["portrait", "vintage", "film", "cinematic"],
+                copies: 1834
+            },
+            {
+                id: 6,
+                title: "Cosmic Nebula",
+                prompt: "Deep space nebula with swirling cosmic gases, vibrant purples and blues, scattered stars, James Webb telescope style, high resolution astrophotography",
+                image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&h=600&fit=crop",
+                category: "NanoBanana",
+                tags: ["space", "cosmic", "nebula", "stars"],
+                copies: 1456
+            }
+        ];
 
-<!-- VIEWER -->
-<div class="viewer" id="viewer">
-  <div class="close" onclick="closeView()">✕</div>
-  <img id="vImg">
-  <div class="viewer-content">
-    <div class="viewer-text" id="vText"></div>
-    <button onclick="copyPrompt()">COPY PROMPT</button>
-  </div>
-</div>
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+        const promptGrid = document.getElementById('prompt-grid');
+        const emptyState = document.getElementById('empty-state');
+        const sectionTitle = document.getElementById('section-title');
+        const promptsCount = document.getElementById('prompts-count');
+        const modal = document.getElementById('modal');
+        const modalClose = document.getElementById('modal-close');
+        const modalImage = document.getElementById('modal-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPrompt = document.getElementById('modal-prompt');
+        const modalCategory = document.getElementById('modal-category');
+        const modalTags = document.getElementById('modal-tags');
+        const modalCopies = document.getElementById('modal-copies');
+        const modalCopyBtn = document.getElementById('modal-copy-btn');
+        const toast = document.getElementById('toast');
+        const searchDesktop = document.getElementById('search-desktop');
+        const searchMobile = document.getElementById('search-mobile');
+        const filterPills = document.querySelectorAll('.filter-pill');
 
-<script src="index.js"></script>
+        // ============================================
+        // STATE
+        // ============================================
+        let activeFilter = 'All';
+        let searchQuery = '';
+        let currentPrompt = null;
 
-<script>
-let currentCat='all',currentText='';
-const grid=document.getElementById('grid');
-const search=document.getElementById('search');
+        // ============================================
+        // FUNCTIONS
+        // ============================================
 
-function render(){
-  const data=allPrompts.filter(p=>
-    (currentCat==='all'||p.category===currentCat)&&
-    (p.prompt.toLowerCase().includes(search.value.toLowerCase())||
-    (p.tags||[]).join(' ').toLowerCase().includes(search.value.toLowerCase()))
-  );
+        // Create prompt card HTML
+        function createPromptCard(prompt, index) {
+            const categoryClass = prompt.category.toLowerCase();
+            const tagsHTML = prompt.tags.slice(0, 3).map(tag => 
+                `<span class="card-tag">#${tag}</span>`
+            ).join('');
+            const moreTagsHTML = prompt.tags.length > 3 
+                ? `<span class="card-tag more">+${prompt.tags.length - 3}</span>` 
+                : '';
 
-  grid.innerHTML=data.map(p=>`
-    <div class="card">
-      <div class="image" onclick="openView('${p.image}','${p.prompt.replace(/'/g,"\\'")}')">
-        <img src="${p.image}">
-      </div>
-      <div class="prompt">${p.prompt}</div>
-      <div class="tags">
-        ${(p.tags||[]).map(t=>`<span class="tag ${p.category}">${t}</span>`).join('')}
-      </div>
-    </div>
-  `).join('');
-}
+            return `
+                <article class="prompt-card fade-in stagger-${Math.min(index + 1, 6)}" data-id="${prompt.id}">
+                    <div class="card-image-container">
+                        <img 
+                            src="${prompt.image}" 
+                            alt="${prompt.title}" 
+                            class="card-image"
+                            loading="lazy"
+                        >
+                        <div class="card-gradient"></div>
+                        <span class="card-category ${categoryClass}">${prompt.category}</span>
+                        <div class="card-actions">
+                            <button class="card-action-btn copy-btn" data-prompt="${encodeURIComponent(prompt.prompt)}" aria-label="Copy prompt">
+                                <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                        <div class="card-content-overlay">
+                            <h3 class="card-title">${prompt.title}</h3>
+                            <p class="card-preview line-clamp-2">${prompt.prompt}</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-tags">
+                            ${tagsHTML}
+                            ${moreTagsHTML}
+                        </div>
+                        <div class="card-meta">
+                            <span class="card-copies">${prompt.copies.toLocaleString()} copies</span>
+                            <span class="card-view ${categoryClass}">View →</span>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
 
-function filterCat(cat){
-  currentCat=cat;
-  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  render();
-}
+        // Filter and render prompts
+        function renderPrompts() {
+            const filtered = prompts.filter(prompt => {
+                const matchesFilter = activeFilter === 'All' || prompt.category === activeFilter;
+                const matchesSearch = searchQuery === '' || 
+                    prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    prompt.prompt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    prompt.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+                return matchesFilter && matchesSearch;
+            });
 
-search.oninput=render;
+            // Update section header
+            sectionTitle.textContent = activeFilter === 'All' ? 'All Prompts' : activeFilter;
+            promptsCount.textContent = `${filtered.length} prompt${filtered.length !== 1 ? 's' : ''} found`;
 
-function openView(img,text){
-  document.getElementById('viewer').classList.add('active');
-  document.getElementById('vImg').src=img;
-  document.getElementById('vText').innerText=text;
-  document.body.style.overflow='hidden';
-  currentText=text;
-}
+            // Render cards or empty state
+            if (filtered.length > 0) {
+                promptGrid.innerHTML = filtered.map((prompt, index) => createPromptCard(prompt, index)).join('');
+                promptGrid.style.display = 'grid';
+                emptyState.style.display = 'none';
+                
+                // Re-initialize Lucide icons for new elements
+                lucide.createIcons();
+                
+                // Add event listeners to new cards
+                attachCardListeners();
+            } else {
+                promptGrid.style.display = 'none';
+                emptyState.style.display = 'block';
+            }
+        }
 
-function closeView(){
-  document.getElementById('viewer').classList.remove('active');
-  document.body.style.overflow='auto';
-}
+        // Attach event listeners to prompt cards
+        function attachCardListeners() {
+            // Card click to open modal
+            document.querySelectorAll('.prompt-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Don't open modal if clicking copy button
+                    if (e.target.closest('.copy-btn')) return;
+                    
+                    const id = parseInt(card.dataset.id);
+                    const prompt = prompts.find(p => p.id === id);
+                    if (prompt) openModal(prompt);
+                });
+            });
 
-function copyPrompt(){
-  navigator.clipboard.writeText(currentText);
-}
+            // Quick copy buttons
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const promptText = decodeURIComponent(btn.dataset.prompt);
+                    copyToClipboard(promptText);
+                });
+            });
+        }
 
-render();
-</script>
+        // Open modal with prompt details
+        function openModal(prompt) {
+            currentPrompt = prompt;
+            const categoryClass = prompt.category.toLowerCase();
 
+            modalImage.src = prompt.image;
+            modalImage.alt = prompt.title;
+            modalTitle.textContent = prompt.title;
+            modalPrompt.textContent = prompt.prompt;
+            modalCategory.textContent = prompt.category;
+            modalCategory.className = `modal-category ${categoryClass}`;
+            modalCopies.textContent = prompt.copies.toLocaleString();
+
+            // Render tags
+            modalTags.innerHTML = prompt.tags.map((tag, i) => 
+                `<span class="modal-tag ${i === 0 ? `primary ${categoryClass}` : 'default'}">#${tag}</span>`
+            ).join('');
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            currentPrompt = null;
+        }
+
+        // Copy text to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
+            });
+        }
+
+        // Show toast notification
+        function showToast() {
+            toast.classList.add('active');
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 2000);
+        }
+
+        // Update filter pills active state
+        function updateFilterPills() {
+            filterPills.forEach(pill => {
+                if (pill.dataset.filter === activeFilter) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        // Filter pills
+        filterPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                activeFilter = pill.dataset.filter;
+                updateFilterPills();
+                renderPrompts();
+            });
+        });
+
+        // Search inputs
+        searchDesktop.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            searchMobile.value = searchQuery;
+            renderPrompts();
+        });
+
+        searchMobile.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            searchDesktop.value = searchQuery;
+            renderPrompts();
+        });
+
+        // Modal close button
+        modalClose.addEventListener('click', closeModal);
+
+        // Modal overlay click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Modal copy button
+        modalCopyBtn.addEventListener('click', () => {
+            if (currentPrompt) {
+                copyToClipboard(currentPrompt.prompt);
+                modalCopyBtn.innerHTML = `
+                    <i data-lucide="check" style="width: 20px; height: 20px;"></i>
+                    <span>Copied!</span>
+                `;
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    modalCopyBtn.innerHTML = `
+                        <i data-lucide="copy" style="width: 20px; height: 20px;"></i>
+                        <span>Copy Prompt</span>
+                    `;
+                    lucide.createIcons();
+                }, 2000);
+            }
+        });
+
+        // Keyboard events
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        renderPrompts();
+    </script>
 </body>
 </html>
