@@ -1,251 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PromptVault</title>
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-:root {
-  --bg: #000000;
-  --card: #0b0b0b;
-  --border: #1a1a1a;
-
-  --text: #ffffff;
-  --muted: #9a9a9a;
-
-  --red: #ff2e2e;
-  --yellow: #ffd400;
+:root{
+  --bg:#000;
+  --card:#0b0b0b;
+  --border:#1a1a1a;
+  --red:#ff2e2e;
+  --yellow:#ffd400;
+  --text:#fff;
+  --muted:#9a9a9a;
 }
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Poppins', sans-serif;
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Poppins,sans-serif;
 }
 
-/* ================= HEADER ================= */
-header {
-  max-width: 1200px;
-  margin: auto;
-  padding: 50px 20px 30px;
+/* ===== HEADER ===== */
+header{
+  max-width:1200px;
+  margin:auto;
+  padding:48px 20px 30px;
 }
 
-.logo {
-  font-family: 'Unbounded', sans-serif;
-  font-weight: 700;
-  font-size: 2.8rem;
-  letter-spacing: 0.15em;
-  color: var(--red);
+.logo{
+  font-family:Unbounded,sans-serif;
+  font-weight:700;
+  font-size:2.8rem;
+  letter-spacing:.15em;
+  color:var(--red);
 }
 
 /* SEARCH */
-.search-box {
-  margin-top: 30px;
-  position: relative;
+.search-box{
+  margin-top:28px;
+  position:relative;
 }
-
-.search-box input {
-  width: 100%;
-  background: #050505;
-  border: 1px solid var(--border);
-  padding: 14px 18px;
-  border-radius: 14px;
-  color: white;
-  font-size: 0.9rem;
+.search-box input{
+  width:100%;
+  padding:14px 18px;
+  background:#050505;
+  border:1px solid var(--border);
+  border-radius:14px;
+  color:white;
 }
-
-.search-box i {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
+.search-box i{
+  position:absolute;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
 }
 
 /* NAV */
-.nav {
-  display: flex;
-  gap: 14px;
-  margin-top: 26px;
+.nav{
+  display:flex;
+  gap:14px;
+  margin-top:24px;
+}
+.nav button{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:8px 18px;
+  border-radius:999px;
+  font-size:.75rem;
+  letter-spacing:.12em;
+  cursor:pointer;
+}
+.nav button.active{
+  background:var(--red);
+  color:black;
+  border-color:var(--red);
+}
+.nav button.nanobanana.active{
+  background:var(--yellow);
+  border-color:var(--yellow);
 }
 
-.nav button {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 8px 18px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+/* ===== GRID ===== */
+.grid{
+  max-width:1200px;
+  margin:auto;
+  padding:40px 20px 120px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:26px;
 }
 
-.nav button.active {
-  background: var(--red);
-  color: black;
-  border-color: var(--red);
+/* CARD */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:12px;
+  transition:.25s;
+}
+.card:hover{
+  transform:translateY(-4px);
+  border-color:#333;
 }
 
-.nav button.nanobanana.active {
-  background: var(--yellow);
-  color: black;
-  border-color: var(--yellow);
+.img-box{
+  aspect-ratio:4/5;
+  border-radius:14px;
+  overflow:hidden;
+  background:#111;
+  cursor:pointer;
+}
+.img-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-/* ================= GRID ================= */
-.grid {
-  max-width: 1200px;
-  margin: auto;
-  padding: 40px 20px 120px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 26px;
-}
-
-/* ================= CARD ================= */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 12px;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  border-color: #333;
-}
-
-.img-box {
-  aspect-ratio: 4/5;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #111;
-}
-
-.img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.prompt {
-  font-size: 0.82rem;
-  color: #cfcfcf;
-  line-height: 1.5;
-  margin: 12px 0;
-  height: 56px;
-  overflow: hidden;
+.prompt{
+  margin:12px 0;
+  font-size:.82rem;
+  color:#cfcfcf;
+  line-height:1.5;
+  height:56px;
+  overflow:hidden;
 }
 
 /* TAGS */
-.tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tag{
+  font-size:.65rem;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  color:var(--muted);
 }
-
-.tag {
-  font-size: 0.65rem;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  color: var(--muted);
-}
-
-.tag.nanobanana {
-  color: var(--yellow);
-  border-color: var(--yellow);
-}
-
-.tag.zimage {
-  color: var(--red);
-  border-color: var(--red);
-}
+.tag.nanobanana{color:var(--yellow);border-color:var(--yellow)}
+.tag.zimage{color:var(--red);border-color:var(--red)}
 
 /* ACTIONS */
-.actions {
-  display: flex;
-  gap: 8px;
+.actions{display:flex;gap:8px}
+.actions button{
+  flex:1;
+  background:none;
+  border:1px solid var(--border);
+  color:white;
+  padding:8px;
+  border-radius:10px;
+  font-size:.75rem;
+  cursor:pointer;
+}
+.actions button:hover{border-color:var(--red)}
+
+/* ===== FULL VIEW MODAL (FIXED) ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.98);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+.modal.active{display:flex}
+
+/* FULL CARD */
+.modal-box{
+  width:100%;
+  max-width:720px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background:#000;
 }
 
-.actions button {
-  flex: 1;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: white;
-  padding: 8px;
-  border-radius: 10px;
-  font-size: 0.75rem;
-  cursor: pointer;
+/* IMAGE HERO */
+.modal-box img{
+  width:100%;
+  max-height:70vh;
+  object-fit:contain;
+  background:#000;
 }
 
-.actions button:hover {
-  border-color: var(--red);
+/* CONTENT */
+.modal-content{
+  padding:18px 20px 24px;
+  overflow-y:auto;
+}
+.modal-text{
+  font-size:.95rem;
+  line-height:1.7;
+  color:#eaeaea;
+  white-space:pre-wrap;
 }
 
-/* ================= MODAL (ENHANCED FULL VIEW) ================= */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.96);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
+/* CLOSE */
+.close{
+  position:fixed;
+  top:16px;
+  right:18px;
+  font-size:1.2rem;
+  color:#aaa;
+  cursor:pointer;
+  z-index:10000;
 }
 
-.modal.active { display: flex; }
-
-.modal-box {
-  max-width: 620px;
-  width: 92%;
-  background: #070707;
-  border: 1px solid #222;
-  border-radius: 24px;
-  padding: 24px;
-}
-
-.modal-box img {
-  width: 100%;
-  border-radius: 18px;
-  margin-bottom: 18px;
-}
-
-.modal-text {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #e5e5e5;
-  margin-bottom: 18px;
-  white-space: pre-wrap;
-}
-
-.modal-actions button {
-  width: 100%;
-  background: var(--red);
-  color: black;
-  border: none;
-  padding: 12px;
-  border-radius: 12px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.close {
-  text-align: right;
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-bottom: 8px;
+/* COPY */
+.modal-actions button{
+  margin-top:16px;
+  width:100%;
+  background:var(--red);
+  color:black;
+  border:none;
+  padding:14px;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -256,7 +235,7 @@ header {
   <div class="logo">PROMPTVAULT</div>
 
   <div class="search-box">
-    <input id="search" placeholder="Search prompts, tags, styles..." />
+    <input id="search" placeholder="Search prompts or tags…">
     <i class="fa-solid fa-magnifying-glass"></i>
   </div>
 
@@ -269,14 +248,16 @@ header {
 
 <main class="grid" id="grid"></main>
 
-<!-- MODAL -->
+<!-- FULL VIEW -->
 <div class="modal" id="modal">
+  <div class="close" onclick="closeModal()">✕</div>
   <div class="modal-box">
-    <div class="close" onclick="closeModal()">✕</div>
     <img id="mImg">
-    <div class="modal-text" id="mText"></div>
-    <div class="modal-actions">
-      <button onclick="copyPrompt()">COPY FULL PROMPT</button>
+    <div class="modal-content">
+      <div class="modal-text" id="mText"></div>
+      <div class="modal-actions">
+        <button onclick="copyPrompt()">COPY FULL PROMPT</button>
+      </div>
     </div>
   </div>
 </div>
@@ -284,65 +265,55 @@ header {
 <script src="index.js"></script>
 
 <script>
-let currentCat = 'all';
-let currentText = '';
+let currentCat='all',currentText='';
+const grid=document.getElementById('grid');
+const search=document.getElementById('search');
 
-const grid = document.getElementById('grid');
-const search = document.getElementById('search');
-
-function render() {
-  let data = allPrompts.filter(p =>
-    (currentCat === 'all' || p.category === currentCat) &&
-    (p.prompt.toLowerCase().includes(search.value.toLowerCase()) ||
-     (p.tags||[]).join(' ').toLowerCase().includes(search.value.toLowerCase()))
+function render(){
+  const data=allPrompts.filter(p=>
+    (currentCat==='all'||p.category===currentCat)&&
+    (p.prompt.toLowerCase().includes(search.value.toLowerCase())||
+    (p.tags||[]).join(' ').toLowerCase().includes(search.value.toLowerCase()))
   );
 
-  grid.innerHTML = data.map(p => `
+  grid.innerHTML=data.map(p=>`
     <div class="card">
       <div class="img-box" onclick="openModal('${p.image}','${p.prompt.replace(/'/g,"\\'")}')">
         <img src="${p.image}" loading="lazy">
       </div>
-
       <div class="prompt">${p.prompt}</div>
-
       <div class="tags">
-        ${(p.tags||[]).map(t=>`
-          <span class="tag ${p.category}">${t}</span>
-        `).join('')}
+        ${(p.tags||[]).map(t=>`<span class="tag ${p.category}">${t}</span>`).join('')}
       </div>
-
       <div class="actions">
         <button onclick="copy('${p.prompt.replace(/'/g,"\\'")}')">COPY</button>
-        <button onclick="share('${p.id}')">
-          <i class="fa-solid fa-share"></i>
-        </button>
+        <button onclick="share('${p.id}')"><i class="fa-solid fa-share"></i></button>
       </div>
     </div>
   `).join('');
 }
 
 function filterCat(cat){
-  currentCat = cat;
+  currentCat=cat;
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   event.target.classList.add('active');
   render();
 }
-
-search.oninput = render;
+search.oninput=render;
 
 function openModal(img,text){
   document.getElementById('modal').classList.add('active');
-  document.getElementById('mImg').src = img;
-  document.getElementById('mText').innerText = text;
-  currentText = text;
+  document.getElementById('mImg').src=img;
+  document.getElementById('mText').innerText=text;
+  document.body.style.overflow='hidden';
+  currentText=text;
 }
-
 function closeModal(){
   document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow='auto';
 }
-
-function copy(text){ navigator.clipboard.writeText(text); }
-function copyPrompt(){ navigator.clipboard.writeText(currentText); }
+function copy(t){navigator.clipboard.writeText(t)}
+function copyPrompt(){navigator.clipboard.writeText(currentText)}
 function share(id){
   navigator.clipboard.writeText(`${location.origin}${location.pathname}?id=${id}`);
 }
