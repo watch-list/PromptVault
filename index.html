@@ -6,18 +6,20 @@
 <title>PromptVault</title>
 
 <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Unbounded:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 :root {
-  --bg: #000;
-  --card: #0c0c0c;
+  --bg: #000000;
+  --card: #0b0b0b;
   --border: #1a1a1a;
-  --text: #fff;
-  --muted: #8a8a8a;
-  --blue: #5c5cff;
-  --red: #ff3b3b;
+
+  --text: #ffffff;
+  --muted: #9a9a9a;
+
+  --red: #ff2e2e;
+  --yellow: #ffd400;
 }
 
 * { box-sizing: border-box; }
@@ -29,34 +31,32 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 header {
-  padding: 50px 20px 30px;
   max-width: 1200px;
   margin: auto;
+  padding: 50px 20px 30px;
 }
 
 .logo {
   font-family: 'Unbounded', sans-serif;
-  font-size: 2.4rem;
-  letter-spacing: 0.12em;
-}
-
-.logo span {
-  color: var(--blue);
+  font-weight: 700;
+  font-size: 2.8rem;
+  letter-spacing: 0.15em;
+  color: var(--red);
 }
 
 /* SEARCH */
 .search-box {
-  margin-top: 25px;
+  margin-top: 30px;
   position: relative;
 }
 
 .search-box input {
   width: 100%;
-  background: #0a0a0a;
+  background: #050505;
   border: 1px solid var(--border);
-  padding: 14px 16px;
+  padding: 14px 18px;
   border-radius: 14px;
   color: white;
   font-size: 0.9rem;
@@ -74,7 +74,7 @@ header {
 .nav {
   display: flex;
   gap: 14px;
-  margin-top: 22px;
+  margin-top: 26px;
 }
 
 .nav button {
@@ -84,20 +84,23 @@ header {
   padding: 8px 18px;
   border-radius: 999px;
   cursor: pointer;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
 }
 
 .nav button.active {
-  background: white;
-  color: black;
-}
-
-.nav button.zimage.active {
   background: var(--red);
+  color: black;
+  border-color: var(--red);
 }
 
-/* GRID */
+.nav button.nanobanana.active {
+  background: var(--yellow);
+  color: black;
+  border-color: var(--yellow);
+}
+
+/* ================= GRID ================= */
 .grid {
   max-width: 1200px;
   margin: auto;
@@ -107,7 +110,7 @@ header {
   gap: 26px;
 }
 
-/* CARD */
+/* ================= CARD ================= */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -134,7 +137,6 @@ header {
   object-fit: cover;
 }
 
-/* PROMPT */
 .prompt {
   font-size: 0.82rem;
   color: #cfcfcf;
@@ -160,6 +162,16 @@ header {
   color: var(--muted);
 }
 
+.tag.nanobanana {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.tag.zimage {
+  color: var(--red);
+  border-color: var(--red);
+}
+
 /* ACTIONS */
 .actions {
   display: flex;
@@ -178,35 +190,54 @@ header {
 }
 
 .actions button:hover {
-  border-color: white;
+  border-color: var(--red);
 }
 
-/* MODAL */
+/* ================= MODAL (ENHANCED FULL VIEW) ================= */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.92);
+  background: rgba(0,0,0,0.96);
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 200;
 }
 
 .modal.active { display: flex; }
 
 .modal-box {
-  max-width: 520px;
-  width: 90%;
-  background: #0c0c0c;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 20px;
+  max-width: 620px;
+  width: 92%;
+  background: #070707;
+  border: 1px solid #222;
+  border-radius: 24px;
+  padding: 24px;
 }
 
 .modal-box img {
   width: 100%;
-  border-radius: 14px;
-  margin-bottom: 12px;
+  border-radius: 18px;
+  margin-bottom: 18px;
+}
+
+.modal-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #e5e5e5;
+  margin-bottom: 18px;
+  white-space: pre-wrap;
+}
+
+.modal-actions button {
+  width: 100%;
+  background: var(--red);
+  color: black;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .close {
@@ -214,6 +245,7 @@ header {
   color: var(--muted);
   cursor: pointer;
   font-size: 0.9rem;
+  margin-bottom: 8px;
 }
 </style>
 </head>
@@ -221,28 +253,31 @@ header {
 <body>
 
 <header>
-  <div class="logo">PROMPT<span>VAULT</span></div>
+  <div class="logo">PROMPTVAULT</div>
 
   <div class="search-box">
-    <input id="search" placeholder="Search prompts, styles, tags..." />
+    <input id="search" placeholder="Search prompts, tags, styles..." />
     <i class="fa-solid fa-magnifying-glass"></i>
   </div>
 
   <div class="nav">
     <button class="active" onclick="filterCat('all')">ALL</button>
-    <button onclick="filterCat('nanobanana')">NANOBANANA</button>
-    <button class="zimage" onclick="filterCat('zimage')">ZIMAGE</button>
+    <button class="nanobanana" onclick="filterCat('nanobanana')">NANOBANANA</button>
+    <button onclick="filterCat('zimage')">ZIMAGE</button>
   </div>
 </header>
 
 <main class="grid" id="grid"></main>
 
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-box">
     <div class="close" onclick="closeModal()">✕</div>
     <img id="mImg">
-    <div id="mText"></div>
-    <button class="actions" onclick="copyPrompt()">COPY PROMPT</button>
+    <div class="modal-text" id="mText"></div>
+    <div class="modal-actions">
+      <button onclick="copyPrompt()">COPY FULL PROMPT</button>
+    </div>
   </div>
 </div>
 
@@ -271,12 +306,16 @@ function render() {
       <div class="prompt">${p.prompt}</div>
 
       <div class="tags">
-        ${(p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}
+        ${(p.tags||[]).map(t=>`
+          <span class="tag ${p.category}">${t}</span>
+        `).join('')}
       </div>
 
       <div class="actions">
         <button onclick="copy('${p.prompt.replace(/'/g,"\\'")}')">COPY</button>
-        <button onclick="share('${p.id}')"><i class="fa-solid fa-share"></i></button>
+        <button onclick="share('${p.id}')">
+          <i class="fa-solid fa-share"></i>
+        </button>
       </div>
     </div>
   `).join('');
